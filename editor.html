@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editor – ImageClear</title>
+  <link rel="stylesheet" href="src/css/style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">🖼️ ImageClear</div>
+    <nav><a href="index.html">← Voltar</a></nav>
+  </header>
+
+  <div class="editor-layout">
+
+    <!-- PAINEL ESQUERDO -->
+    <aside class="controls-panel">
+
+      <section class="panel-section">
+        <h3>📌 Tipo de uso</h3>
+        <div class="usage-type-grid">
+          <button class="usage-btn active" data-type="site"      onclick="selectUsageType(this)"><span>🌐</span>Site</button>
+          <button class="usage-btn"        data-type="linkedin"  onclick="selectUsageType(this)"><span>💼</span>LinkedIn</button>
+          <button class="usage-btn"        data-type="instagram" onclick="selectUsageType(this)"><span>📸</span>Instagram</button>
+          <button class="usage-btn"        data-type="document"  onclick="selectUsageType(this)"><span>📄</span>Documento</button>
+        </div>
+        <p class="usage-hint" id="usageHint">Dimensões: livre • Formato: retangular</p>
+      </section>
+
+      <section class="panel-section">
+        <h3>🎨 Fundo</h3>
+        <div class="bg-options">
+          <button class="bg-btn active" onclick="setBg('transparent',this)">
+            <div class="checker-thumb"></div><span>Transparente</span>
+          </button>
+          <button class="bg-btn" onclick="setBg('#ffffff',this)">
+            <div class="color-thumb" style="background:#fff;border:1px solid #ddd"></div><span>Branco</span>
+          </button>
+          <button class="bg-btn" onclick="setBg('#000000',this)">
+            <div class="color-thumb" style="background:#000"></div><span>Preto</span>
+          </button>
+          <button class="bg-btn" onclick="setBg('custom',this)">
+            <div class="color-thumb" id="customColorThumb" style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)"></div><span>Cor</span>
+          </button>
+        </div>
+        <input type="color" id="customColorPicker" value="#4f46e5"
+          oninput="applyCustomColor(this.value)"
+          style="display:none;margin-top:10px;width:100%;height:38px;border:none;border-radius:8px;cursor:pointer;" />
+      </section>
+
+      <section class="panel-section">
+        <h3>🔍 Zoom e Posição</h3>
+        <div class="slider-row">
+          <label>Zoom <span id="zoomVal">100</span>%</label>
+          <input type="range" min="50" max="300" value="100" id="zoomSlider" oninput="updateZoom()" />
+        </div>
+        <button class="btn-reset" onclick="resetZoom()">↺ Resetar zoom/posição</button>
+        <p class="tip-text">💡 Scroll do mouse ou arraste para ajustar</p>
+      </section>
+
+      <section class="panel-section">
+        <h3>✨ Ajuste Automático</h3>
+        <button class="btn-auto" onclick="autoEnhance()">🪄 Aplicar melhor configuração</button>
+      </section>
+
+      <section class="panel-section">
+        <h3>🔧 Edição Manual</h3>
+        <div class="slider-row">
+          <label>Brilho <span id="brightnessVal">100</span>%</label>
+          <input type="range" min="50" max="150" value="100" id="brightnessSlider" oninput="updateFilter()" />
+        </div>
+        <div class="slider-row">
+          <label>Contraste <span id="contrastVal">100</span>%</label>
+          <input type="range" min="50" max="150" value="100" id="contrastSlider" oninput="updateFilter()" />
+        </div>
+        <div class="slider-row">
+          <label>Saturação <span id="saturationVal">100</span>%</label>
+          <input type="range" min="0" max="200" value="100" id="saturationSlider" oninput="updateFilter()" />
+        </div>
+        <div class="slider-row">
+          <label>Temperatura <span id="tempVal">0</span></label>
+          <input type="range" min="-50" max="50" value="0" id="tempSlider" oninput="updateFilter()" />
+        </div>
+        <div class="slider-row">
+          <label>Nitidez <span id="sharpVal">0</span></label>
+          <input type="range" min="0" max="5" value="0" id="sharpSlider" oninput="updateFilter()" />
+        </div>
+        <button class="btn-reset" onclick="resetFilters()">↺ Resetar ajustes</button>
+      </section>
+
+      <section class="panel-section">
+        <h3>⬇️ Exportar</h3>
+        <button class="btn-download" onclick="downloadImage()">⬇️ Baixar PNG</button>
+        <button class="btn-download-all" id="btnDownloadAll" style="display:none" onclick="downloadAll()">📦 Baixar todos (ZIP)</button>
+      </section>
+
+    </aside>
+
+    <!-- ÁREA CENTRAL -->
+    <div class="editor-center">
+      <div class="preview-toolbar">
+        <span id="imageCounter">1 / 1 imagem</span>
+        <div class="preview-nav">
+          <button onclick="prevImage()">‹</button>
+          <button onclick="nextImage()">›</button>
+        </div>
+      </div>
+
+      <div class="canvas-wrapper" id="canvasWrapper">
+        <canvas id="canvasBefore" class="ba-canvas"></canvas>
+        <canvas id="canvasAfter"  class="ba-canvas after-canvas"></canvas>
+        <div class="profile-mask" id="profileMask" style="display:none">
+          <div class="profile-mask-circle"></div>
+        </div>
+        <div class="ba-slider" id="baSlider">
+          <div class="ba-handle"><span>◀</span><span>▶</span></div>
+        </div>
+        <span class="ba-label ba-label-left">Antes</span>
+        <span class="ba-label ba-label-right">Depois</span>
+      </div>
+
+      <div class="canvas-actions">
+        <button onclick="toggleBeforeAfter()" id="btnToggleBA">👁️ Antes/Depois</button>
+        <button onclick="toggleProfilePreview()" id="btnProfile" style="display:none">👤 Preview perfil</button>
+        <button class="btn-reprocess" onclick="reprocessCurrent()">🔄 Reprocessar</button>
+      </div>
+    </div>
+
+    <!-- PAINEL DIREITO -->
+    <aside class="batch-panel">
+      <h3>📦 Lote</h3>
+      <div class="batch-list" id="batchList"></div>
+    </aside>
+
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p id="loadingText">Carregando modelo de IA…</p>
+      <p class="loading-sub" id="loadingSub">Apenas na primeira vez, depois fica em cache</p>
+      <div class="progress-bar"><div id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script type="module" src="src/js/editor.js"></script>
+</body>
+</html>
