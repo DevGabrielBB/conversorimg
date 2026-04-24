@@ -1,67 +1,37 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ImageClear – Remova e Edite Fundos</title>
-  <link rel="stylesheet" href="src/css/style.css" />
+  <title>ImageClear – Remova Fundos</title>
+  <link rel="stylesheet" href="src/css/style.css"/>
 </head>
 <body>
   <header>
     <div class="logo">🖼️ ImageClear</div>
-    <nav>
-      <a href="index.html" class="active">Início</a>
-      <a href="#como-funciona">Como funciona</a>
-    </nav>
   </header>
 
   <main class="hero">
-    <h1>Remova e Substitua Fundos <span>com um clique</span></h1>
-    <p class="subtitle">100% no navegador • Sem cadastro • Sem API • Grátis</p>
+    <h1>Remova Fundos <span>com um clique</span></h1>
+    <p class="subtitle">100% automático • Sem cadastro • Grátis</p>
 
     <div class="upload-area" id="uploadArea">
       <div class="upload-icon">⬆️</div>
-      <p><strong>Arraste, cole imagens ou clique para selecionar</strong></p>
-      <p class="upload-sub">Suporta JPG, PNG, WEBP – até 100 imagens por vez</p>
-      <input type="file" id="fileInput" accept="image/*" multiple hidden />
+      <p><strong>Arraste, cole ou clique para selecionar</strong></p>
+      <p class="upload-sub">JPG, PNG, WEBP – até 100 imagens</p>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden/>
       <div class="upload-buttons">
         <button class="btn-primary" onclick="document.getElementById('fileInput').click()">📁 Enviar imagem</button>
-        <button class="btn-secondary" onclick="document.getElementById('fileInput').click()">📦 Edição em Lote <small>Até 100 imagens</small></button>
-      </div>
-      <div class="url-row">
-        <input type="text" id="urlInput" placeholder="Cole uma URL de imagem aqui..." />
-        <button class="btn-url" onclick="loadFromUrl()">Carregar</button>
-      </div>
-    </div>
-
-    <!-- DEMONSTRAÇÃO ANTES/DEPOIS (só visual, na página inicial) -->
-    <div class="demo-section" id="como-funciona">
-      <h2>Veja o resultado</h2>
-      <div class="demo-ba-wrapper">
-        <div class="demo-ba-container" id="demoContainer">
-          <div class="demo-before">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80" alt="antes" id="demoImg" />
-            <span class="ba-label ba-label-left">Antes</span>
-          </div>
-          <div class="demo-after" id="demoAfter">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80" alt="depois" style="mix-blend-mode:multiply" />
-            <span class="ba-label ba-label-right">Depois</span>
-          </div>
-          <div class="demo-slider" id="demoSlider">
-            <div class="ba-handle"><span>◀</span><span>▶</span></div>
-          </div>
-        </div>
-        <p class="demo-hint">← Arraste para comparar</p>
+        <button class="btn-secondary" onclick="document.getElementById('fileInput').click()">📦 Edição em Lote<small>Até 100 imagens</small></button>
       </div>
     </div>
 
     <div class="steps-section">
-      <h2>Como funciona</h2>
       <div class="steps">
-        <div class="step"><div class="step-icon">📤</div><h3>1. Envie sua imagem</h3><p>Selecione uma ou até 100 fotos de uma vez</p></div>
-        <div class="step"><div class="step-icon">✂️</div><h3>2. Fundo removido</h3><p>IA processa tudo direto no seu navegador</p></div>
-        <div class="step"><div class="step-icon">🎨</div><h3>3. Escolha o fundo</h3><p>Transparente ou cor sólida personalizada</p></div>
-        <div class="step"><div class="step-icon">⬇️</div><h3>4. Baixe em PNG</h3><p>Arquivo limpo e pronto para usar</p></div>
+        <div class="step"><div class="step-icon">📤</div><h3>1. Envie</h3><p>Selecione sua foto</p></div>
+        <div class="step"><div class="step-icon">✂️</div><h3>2. Fundo removido</h3><p>IA remove automaticamente</p></div>
+        <div class="step"><div class="step-icon">🎨</div><h3>3. Edite</h3><p>Escolha cor ou transparente</p></div>
+        <div class="step"><div class="step-icon">⬇️</div><h3>4. Baixe PNG</h3><p>Arquivo limpo e pronto</p></div>
       </div>
     </div>
   </main>

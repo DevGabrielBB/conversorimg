@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Editor – ImageClear</title>
-  <link rel="stylesheet" href="src/css/style.css" />
+  <link rel="stylesheet" href="src/css/style.css"/>
 </head>
 <body>
   <header>
@@ -16,6 +16,15 @@
 
     <!-- PAINEL ESQUERDO -->
     <aside class="controls-panel">
+
+      <section class="panel-section">
+        <h3>🔑 Chave remove.bg</h3>
+        <input type="text" id="apiKeyInput" placeholder="Cole sua API Key aqui..." class="api-input"/>
+        <p class="tip-text">Gratuito: 50 imagens/mês • <a href="https://www.remove.bg/pt-br/dashboard#api-key" target="_blank">Obter chave →</a></p>
+        <label class="save-key-row">
+          <input type="checkbox" id="saveKey" checked/> Salvar no navegador
+        </label>
+      </section>
 
       <section class="panel-section">
         <h3>📌 Tipo de uso</h3>
@@ -37,17 +46,17 @@
           <button class="bg-btn" onclick="setBg('custom',this)"><div class="color-thumb" id="customColorThumb" style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)"></div><span>Cor</span></button>
         </div>
         <input type="color" id="customColorPicker" value="#4f46e5" oninput="applyCustomColor(this.value)"
-          style="display:none;margin-top:10px;width:100%;height:38px;border:none;border-radius:8px;cursor:pointer;" />
+          style="display:none;margin-top:10px;width:100%;height:38px;border:none;border-radius:8px;cursor:pointer;"/>
       </section>
 
       <section class="panel-section">
-        <h3>🔍 Zoom e Posição</h3>
+        <h3>🔍 Zoom</h3>
         <div class="slider-row">
           <label>Zoom <span id="zoomVal">100</span>%</label>
-          <input type="range" min="50" max="300" value="100" id="zoomSlider" oninput="updateZoom()" />
+          <input type="range" min="30" max="300" value="100" id="zoomSlider" oninput="updateZoom()"/>
         </div>
-        <button class="btn-reset" onclick="resetZoom()">↺ Resetar zoom/posição</button>
-        <p class="tip-text">💡 Scroll do mouse ou arraste para reposicionar</p>
+        <button class="btn-reset" onclick="resetZoom()">↺ Resetar</button>
+        <p class="tip-text">💡 Scroll do mouse para zoom • Arraste para mover</p>
       </section>
 
       <section class="panel-section">
@@ -59,23 +68,19 @@
         <h3>🔧 Edição Manual</h3>
         <div class="slider-row">
           <label>Brilho <span id="brightnessVal">100</span>%</label>
-          <input type="range" min="50" max="150" value="100" id="brightnessSlider" oninput="updateFilter()" />
+          <input type="range" min="50" max="150" value="100" id="brightnessSlider" oninput="updateFilter()"/>
         </div>
         <div class="slider-row">
           <label>Contraste <span id="contrastVal">100</span>%</label>
-          <input type="range" min="50" max="150" value="100" id="contrastSlider" oninput="updateFilter()" />
+          <input type="range" min="50" max="150" value="100" id="contrastSlider" oninput="updateFilter()"/>
         </div>
         <div class="slider-row">
           <label>Saturação <span id="saturationVal">100</span>%</label>
-          <input type="range" min="0" max="200" value="100" id="saturationSlider" oninput="updateFilter()" />
+          <input type="range" min="0" max="200" value="100" id="saturationSlider" oninput="updateFilter()"/>
         </div>
         <div class="slider-row">
           <label>Temperatura <span id="tempVal">0</span></label>
-          <input type="range" min="-50" max="50" value="0" id="tempSlider" oninput="updateFilter()" />
-        </div>
-        <div class="slider-row">
-          <label>Nitidez <span id="sharpVal">0</span></label>
-          <input type="range" min="0" max="5" value="0" id="sharpSlider" oninput="updateFilter()" />
+          <input type="range" min="-50" max="50" value="0" id="tempSlider" oninput="updateFilter()"/>
         </div>
         <button class="btn-reset" onclick="resetFilters()">↺ Resetar ajustes</button>
       </section>
@@ -88,7 +93,7 @@
 
     </aside>
 
-    <!-- ÁREA CENTRAL: só o canvas da imagem editada, sem slider -->
+    <!-- ÁREA CENTRAL -->
     <div class="editor-center">
       <div class="preview-toolbar">
         <span id="imageCounter">1 / 1 imagem</span>
@@ -100,21 +105,20 @@
 
       <div class="canvas-wrapper" id="canvasWrapper">
         <canvas id="mainCanvas"></canvas>
-        <!-- Overlay circular para perfil -->
         <div class="profile-mask" id="profileMask" style="display:none">
           <div class="profile-mask-circle"></div>
         </div>
       </div>
 
       <div class="canvas-actions">
-        <button onclick="toggleProfilePreview()" id="btnProfile" style="display:none">👤 Preview perfil circular</button>
-        <button class="btn-reprocess" onclick="reprocessCurrent()">🔄 Remover fundo (IA)</button>
+        <button class="btn-remove-bg" onclick="removeBgCurrent()">✂️ Remover Fundo</button>
+        <button onclick="toggleProfilePreview()" id="btnProfile" style="display:none">👤 Preview circular</button>
       </div>
 
-      <div id="aiStatus" class="ai-status" style="display:none"></div>
+      <div id="statusBar" class="status-bar" style="display:none"></div>
     </div>
 
-    <!-- PAINEL DIREITO: lote -->
+    <!-- LOTE -->
     <aside class="batch-panel">
       <h3>📦 Lote</h3>
       <div class="batch-list" id="batchList"></div>
@@ -126,9 +130,9 @@
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-box">
       <div class="spinner"></div>
-      <p id="loadingText">Carregando…</p>
-      <p class="loading-sub" id="loadingSub"></p>
-      <div class="progress-bar"><div id="progressFill"></div></div>
+      <p id="loadingText">Removendo fundo…</p>
+      <p class="loading-sub" id="loadingSub">Aguarde, processando com IA</p>
+      <div class="progress-bar"><div id="progressFill" style="width:60%"></div></div>
     </div>
   </div>
 
