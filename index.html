@@ -34,8 +34,29 @@
       </div>
     </div>
 
-    <div class="before-after-section">
-      <h2 id="como-funciona">Como funciona</h2>
+    <!-- DEMONSTRAÇÃO ANTES/DEPOIS (só visual, na página inicial) -->
+    <div class="demo-section" id="como-funciona">
+      <h2>Veja o resultado</h2>
+      <div class="demo-ba-wrapper">
+        <div class="demo-ba-container" id="demoContainer">
+          <div class="demo-before">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80" alt="antes" id="demoImg" />
+            <span class="ba-label ba-label-left">Antes</span>
+          </div>
+          <div class="demo-after" id="demoAfter">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80" alt="depois" style="mix-blend-mode:multiply" />
+            <span class="ba-label ba-label-right">Depois</span>
+          </div>
+          <div class="demo-slider" id="demoSlider">
+            <div class="ba-handle"><span>◀</span><span>▶</span></div>
+          </div>
+        </div>
+        <p class="demo-hint">← Arraste para comparar</p>
+      </div>
+    </div>
+
+    <div class="steps-section">
+      <h2>Como funciona</h2>
       <div class="steps">
         <div class="step"><div class="step-icon">📤</div><h3>1. Envie sua imagem</h3><p>Selecione uma ou até 100 fotos de uma vez</p></div>
         <div class="step"><div class="step-icon">✂️</div><h3>2. Fundo removido</h3><p>IA processa tudo direto no seu navegador</p></div>

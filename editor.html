@@ -31,21 +31,12 @@
       <section class="panel-section">
         <h3>🎨 Fundo</h3>
         <div class="bg-options">
-          <button class="bg-btn active" onclick="setBg('transparent',this)">
-            <div class="checker-thumb"></div><span>Transparente</span>
-          </button>
-          <button class="bg-btn" onclick="setBg('#ffffff',this)">
-            <div class="color-thumb" style="background:#fff;border:1px solid #ddd"></div><span>Branco</span>
-          </button>
-          <button class="bg-btn" onclick="setBg('#000000',this)">
-            <div class="color-thumb" style="background:#000"></div><span>Preto</span>
-          </button>
-          <button class="bg-btn" onclick="setBg('custom',this)">
-            <div class="color-thumb" id="customColorThumb" style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)"></div><span>Cor</span>
-          </button>
+          <button class="bg-btn active" onclick="setBg('transparent',this)"><div class="checker-thumb"></div><span>Transparente</span></button>
+          <button class="bg-btn" onclick="setBg('#ffffff',this)"><div class="color-thumb" style="background:#fff;border:1px solid #ddd"></div><span>Branco</span></button>
+          <button class="bg-btn" onclick="setBg('#000000',this)"><div class="color-thumb" style="background:#000"></div><span>Preto</span></button>
+          <button class="bg-btn" onclick="setBg('custom',this)"><div class="color-thumb" id="customColorThumb" style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)"></div><span>Cor</span></button>
         </div>
-        <input type="color" id="customColorPicker" value="#4f46e5"
-          oninput="applyCustomColor(this.value)"
+        <input type="color" id="customColorPicker" value="#4f46e5" oninput="applyCustomColor(this.value)"
           style="display:none;margin-top:10px;width:100%;height:38px;border:none;border-radius:8px;cursor:pointer;" />
       </section>
 
@@ -56,7 +47,7 @@
           <input type="range" min="50" max="300" value="100" id="zoomSlider" oninput="updateZoom()" />
         </div>
         <button class="btn-reset" onclick="resetZoom()">↺ Resetar zoom/posição</button>
-        <p class="tip-text">💡 Scroll do mouse ou arraste para ajustar</p>
+        <p class="tip-text">💡 Scroll do mouse ou arraste para reposicionar</p>
       </section>
 
       <section class="panel-section">
@@ -97,7 +88,7 @@
 
     </aside>
 
-    <!-- ÁREA CENTRAL -->
+    <!-- ÁREA CENTRAL: só o canvas da imagem editada, sem slider -->
     <div class="editor-center">
       <div class="preview-toolbar">
         <span id="imageCounter">1 / 1 imagem</span>
@@ -108,26 +99,22 @@
       </div>
 
       <div class="canvas-wrapper" id="canvasWrapper">
-        <canvas id="canvasBefore" class="ba-canvas"></canvas>
-        <canvas id="canvasAfter"  class="ba-canvas after-canvas"></canvas>
+        <canvas id="mainCanvas"></canvas>
+        <!-- Overlay circular para perfil -->
         <div class="profile-mask" id="profileMask" style="display:none">
           <div class="profile-mask-circle"></div>
         </div>
-        <div class="ba-slider" id="baSlider">
-          <div class="ba-handle"><span>◀</span><span>▶</span></div>
-        </div>
-        <span class="ba-label ba-label-left">Antes</span>
-        <span class="ba-label ba-label-right">Depois</span>
       </div>
 
       <div class="canvas-actions">
-        <button onclick="toggleBeforeAfter()" id="btnToggleBA">👁️ Antes/Depois</button>
-        <button onclick="toggleProfilePreview()" id="btnProfile" style="display:none">👤 Preview perfil</button>
-        <button class="btn-reprocess" onclick="reprocessCurrent()">🔄 Reprocessar</button>
+        <button onclick="toggleProfilePreview()" id="btnProfile" style="display:none">👤 Preview perfil circular</button>
+        <button class="btn-reprocess" onclick="reprocessCurrent()">🔄 Remover fundo (IA)</button>
       </div>
+
+      <div id="aiStatus" class="ai-status" style="display:none"></div>
     </div>
 
-    <!-- PAINEL DIREITO -->
+    <!-- PAINEL DIREITO: lote -->
     <aside class="batch-panel">
       <h3>📦 Lote</h3>
       <div class="batch-list" id="batchList"></div>
@@ -135,16 +122,17 @@
 
   </div>
 
+  <!-- Loading -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-box">
       <div class="spinner"></div>
-      <p id="loadingText">Carregando modelo de IA…</p>
-      <p class="loading-sub" id="loadingSub">Apenas na primeira vez, depois fica em cache</p>
+      <p id="loadingText">Carregando…</p>
+      <p class="loading-sub" id="loadingSub"></p>
       <div class="progress-bar"><div id="progressFill"></div></div>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script type="module" src="src/js/editor.js"></script>
+  <script src="src/js/editor.js"></script>
 </body>
 </html>
